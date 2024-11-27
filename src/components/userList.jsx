@@ -16,10 +16,12 @@ import {
   Select,
   MenuItem,
   InputLabel,
-  FormControl
+  FormControl,
+  FormHelperText
 } from '@mui/material';
 import UserCard from "./userCard"
 import { fetchUsers, addUser } from "../api/apiUrl";
+import { validateUserForm } from "../utils/validator"; // Import the validator
 
 const UserList = () => {
   const [users, setUsers] = useState([]);
@@ -27,7 +29,7 @@ const UserList = () => {
     firstName: '',
     lastName: '',
     email: '',
-    department: '', // Default empty department
+    department: '',
   });
   const [editingUserId, setEditingUserId] = useState(null);
 
@@ -36,7 +38,10 @@ const UserList = () => {
 
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(5); // You can change this value based on how many users you want per page
+  const [itemsPerPage] = useState(5);
+
+  // Error state
+  const [errors, setErrors] = useState({});
 
   useEffect(() => {
     const loadUsers = async () => {
@@ -56,10 +61,18 @@ const UserList = () => {
   };
 
   const handleAddUser = async () => {
+    // Validate the form
+    const formErrors = validateUserForm(newUser);
+    if (Object.keys(formErrors).length > 0) {
+      setErrors(formErrors); // Set errors if validation fails
+      return;
+    }
+
     try {
       const createdUser = await addUser(newUser);
       setUsers((prevUsers) => [...prevUsers, createdUser]);
       setNewUser({ firstName: '', lastName: '', email: '', department: '' });
+      setErrors({}); // Clear errors after successful addition
       setOpen(false); // Close the modal after adding the user
     } catch (error) {
       console.error('Error adding user:', error);
@@ -91,11 +104,14 @@ const UserList = () => {
   };
 
   return (
-    <div>
-      <h1>User List</h1>
-
-      {/* Add User Button */}
-      <Button variant="contained" color="primary" onClick={() => setOpen(true)} sx={{ marginBottom: 2 }}>
+    <div style={{ backgroundColor: '#f0f0f0', minHeight: '100vh', padding: '20px' }}>
+      <h1 style={{ color: '#333' }}>User Management Dashboard</h1>
+      <Button
+        variant="contained"
+        color="primary"
+        onClick={() => setOpen(true)}
+        sx={{ marginBottom: 2 }}
+      >
         Add User
       </Button>
 
@@ -112,6 +128,8 @@ const UserList = () => {
               name="firstName"
               value={newUser.firstName}
               onChange={handleInputChange}
+              error={!!errors.firstName}
+              helperText={errors.firstName}
             />
             <TextField
               fullWidth
@@ -121,6 +139,8 @@ const UserList = () => {
               name="lastName"
               value={newUser.lastName}
               onChange={handleInputChange}
+              error={!!errors.lastName}
+              helperText={errors.lastName}
             />
             <TextField
               fullWidth
@@ -130,10 +150,12 @@ const UserList = () => {
               name="email"
               value={newUser.email}
               onChange={handleInputChange}
+              error={!!errors.email}
+              helperText={errors.email}
             />
 
             {/* Department Dropdown */}
-            <FormControl fullWidth margin="normal">
+            <FormControl fullWidth margin="normal" error={!!errors.department}>
               <InputLabel>Department</InputLabel>
               <Select
                 name="department"
@@ -146,6 +168,7 @@ const UserList = () => {
                 <MenuItem value="Engineering">Engineering</MenuItem>
                 <MenuItem value="Sales">Sales</MenuItem>
               </Select>
+              {errors.department && <FormHelperText>{errors.department}</FormHelperText>}
             </FormControl>
           </Box>
         </DialogContent>
