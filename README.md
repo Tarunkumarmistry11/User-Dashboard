@@ -6,6 +6,8 @@ A React-based User Management System leveraging Material-UI for styling and inte
 ## Table of Contents
 -  Features
 - Technologies Used
+- Architecture Diagram
+- Folder structure
 - Installation 
 - Usage
  - Logic and implementation
