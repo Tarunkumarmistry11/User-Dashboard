@@ -21,7 +21,7 @@ import {
 } from '@mui/material';
 import UserCard from "./userCard"
 import { fetchUsers, addUser } from "../api/apiUrl";
-import { validateUserForm } from "../utils/validator"; // Import the validator
+import { validateUser } from "../utils/validator"; // Import the validator
 
 const UserList = () => {
   const [users, setUsers] = useState([]);
@@ -62,7 +62,7 @@ const UserList = () => {
 
   const handleAddUser = async () => {
     // Validate the form
-    const formErrors = validateUserForm(newUser);
+    const formErrors = validateUser(newUser);
     if (Object.keys(formErrors).length > 0) {
       setErrors(formErrors); // Set errors if validation fails
       return;
