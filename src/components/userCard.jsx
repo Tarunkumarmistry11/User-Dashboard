@@ -44,15 +44,6 @@ const UserCard = ({
             />
           </TableCell>
           <TableCell>
-            <TextField
-              variant="outlined"
-              fullWidth
-              value={user.website}
-              onChange={(e) => updateUserData(user.id, 'website', e.target.value)}
-              label="Website"
-            />
-          </TableCell>
-          <TableCell>
             <Button
               variant="contained"
               color="primary"
@@ -69,7 +60,6 @@ const UserCard = ({
           <TableCell>{user.username}</TableCell>
           <TableCell>{user.email}</TableCell>
           <TableCell>{user.phone}</TableCell>
-          <TableCell>{user.website}</TableCell>
           <TableCell>
             <Button
               variant="outlined"
