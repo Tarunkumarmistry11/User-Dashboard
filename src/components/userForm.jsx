@@ -1,49 +1,78 @@
-
 import React from 'react';
+import { Box, TextField, Button, Typography } from '@mui/material';
 
 const UserForm = ({ newUser, handleInputChange, addUser }) => {
   return (
-    <div>
-      <h2>Add New User</h2>
-      <div>
-        <input
-          type="text"
-          name="name"
-          placeholder="Name"
-          value={newUser.name}
-          onChange={handleInputChange}
-        />
-        <input
-          type="text"
-          name="username"
-          placeholder="Username"
-          value={newUser.username}
-          onChange={handleInputChange}
-        />
-        <input
-          type="email"
-          name="email"
-          placeholder="Email"
-          value={newUser.email}
-          onChange={handleInputChange}
-        />
-        <input
-          type="text"
-          name="phone"
-          placeholder="Phone"
-          value={newUser.phone}
-          onChange={handleInputChange}
-        />
-        <input
-          type="text"
-          name="website"
-          placeholder="Website"
-          value={newUser.website}
-          onChange={handleInputChange}
-        />
-        <button onClick={addUser}>Add User</button>
-      </div>
-    </div>
+    <Box
+      sx={{
+        maxWidth: 600,
+        mx: 'auto',
+        p: 3,
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 2, 
+        backgroundColor: '#f9f9f9',
+        borderRadius: 2,
+        boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.1)',
+      }}
+    >
+      <Typography variant="h5" textAlign="center" color="textPrimary" mb={2}>
+        Add New User
+      </Typography>
+      <TextField
+        label="Name"
+        name="name"
+        variant="outlined"
+        fullWidth
+        value={newUser.name}
+        onChange={handleInputChange}
+      />
+      <TextField
+        label="Username"
+        name="username"
+        variant="outlined"
+        fullWidth
+        value={newUser.username}
+        onChange={handleInputChange}
+      />
+      <TextField
+        label="Email"
+        name="email"
+        variant="outlined"
+        fullWidth
+        value={newUser.email}
+        onChange={handleInputChange}
+        type="email"
+      />
+      <TextField
+        label="Phone"
+        name="phone"
+        variant="outlined"
+        fullWidth
+        value={newUser.phone}
+        onChange={handleInputChange}
+      />
+      <TextField
+        label="Website"
+        name="website"
+        variant="outlined"
+        fullWidth
+        value={newUser.website}
+        onChange={handleInputChange}
+      />
+      <Button
+        variant="contained"
+        color="primary"
+        onClick={addUser}
+        sx={{
+          mt: 2,
+          py: 1.5,
+          fontWeight: 'bold',
+        }}
+      >
+        Add User
+      </Button>
+    </Box>
   );
 };
 

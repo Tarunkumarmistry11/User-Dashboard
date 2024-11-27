@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import {
   Table,
   TableHead,
@@ -17,31 +17,28 @@ import {
   MenuItem,
   InputLabel,
   FormControl,
-  FormHelperText
-} from '@mui/material';
-import UserCard from "./userCard"
+  FormHelperText,
+  Typography,
+  Grid,
+} from "@mui/material";
+import UserCard from "./userCard";
 import { fetchUsers, addUser } from "../api/apiUrl";
 import { validateUser } from "../utils/validator"; // Import the validator
 
 const UserList = () => {
   const [users, setUsers] = useState([]);
   const [newUser, setNewUser] = useState({
-    firstName: '',
-    lastName: '',
-    email: '',
-    department: '',
+    name: "",
+    username: "",
+    email: "",
+    phone: "",
+    website: "",
   });
   const [editingUserId, setEditingUserId] = useState(null);
-
-  // Modal state
-  const [open, setOpen] = useState(false);
-
-  // Pagination state
+  const [open, setOpen] = useState(false); // Modal state
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(5);
-
-  // Error state
-  const [errors, setErrors] = useState({});
+  const [errors, setErrors] = useState({}); // Error state
 
   useEffect(() => {
     const loadUsers = async () => {
@@ -49,7 +46,7 @@ const UserList = () => {
         const result = await fetchUsers();
         setUsers(result);
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error("Error fetching data:", error);
       }
     };
     loadUsers();
@@ -61,27 +58,31 @@ const UserList = () => {
   };
 
   const handleAddUser = async () => {
-    // Validate the form
     const formErrors = validateUser(newUser);
     if (Object.keys(formErrors).length > 0) {
-      setErrors(formErrors); // Set errors if validation fails
+      setErrors(formErrors);
       return;
     }
 
     try {
       const createdUser = await addUser(newUser);
       setUsers((prevUsers) => [...prevUsers, createdUser]);
-      setNewUser({ firstName: '', lastName: '', email: '', department: '' });
-      setErrors({}); // Clear errors after successful addition
-      setOpen(false); // Close the modal after adding the user
+      setNewUser({
+        name: "",
+        username: "",
+        email: "",
+        phone: "",
+        website: "",
+      });
+      setErrors({});
+      setOpen(false);
     } catch (error) {
-      console.error('Error adding user:', error);
+      console.error("Error adding user:", error);
     }
   };
 
   const startEditing = (id) => setEditingUserId(id);
   const stopEditing = () => setEditingUserId(null);
-
   const updateUserData = (id, key, value) => {
     setUsers((prevUsers) =>
       prevUsers.map((user) =>
@@ -94,7 +95,6 @@ const UserList = () => {
     setUsers((prevUsers) => prevUsers.filter((user) => user.id !== id));
   };
 
-  // Logic for pagination
   const indexOfLastUser = currentPage * itemsPerPage;
   const indexOfFirstUser = indexOfLastUser - itemsPerPage;
   const currentUsers = users.slice(indexOfFirstUser, indexOfLastUser);
@@ -104,16 +104,32 @@ const UserList = () => {
   };
 
   return (
-    <div style={{ backgroundColor: '#f0f0f0', minHeight: '100vh', padding: '20px' }}>
-      <h1 style={{ color: '#333' }}>User Management Dashboard</h1>
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={() => setOpen(true)}
-        sx={{ marginBottom: 2 }}
-      >
-        Add User
-      </Button>
+    <Box sx={{ backgroundColor: "#f0f0f0", minHeight: "100vh", p: 3 }}>
+      <Grid container spacing={2} alignItems="center">
+        {/* User Management Dashboard Heading */}
+        <Grid item xs={12}>
+          <Typography
+            variant="h4"
+            color="textPrimary"
+            sx={{ mb: 2, textAlign: "center" }}
+          >
+            User Management Dashboard
+          </Typography>
+        </Grid>
+
+        {/* Add User Button */}
+        <Grid item xs={12}>
+          <Box sx={{ display: "flex", justifyContent: "center", mb: 2 }}>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => setOpen(true)}
+            >
+              Add User
+            </Button>
+          </Box>
+        </Grid>
+      </Grid>
 
       <Dialog open={open} onClose={() => setOpen(false)}>
         <DialogTitle>Add New User</DialogTitle>
@@ -124,22 +140,22 @@ const UserList = () => {
               label="First Name"
               variant="outlined"
               margin="normal"
-              name="firstName"
-              value={newUser.firstName}
+              name="name"
+              value={newUser.name}
               onChange={handleInputChange}
-              error={!!errors.firstName}
-              helperText={errors.firstName}
+              error={!!errors.name}
+              helperText={errors.name}
             />
             <TextField
               fullWidth
               label="Last Name"
               variant="outlined"
               margin="normal"
-              name="lastName"
-              value={newUser.lastName}
+              name="username"
+              value={newUser.username}
               onChange={handleInputChange}
-              error={!!errors.lastName}
-              helperText={errors.lastName}
+              error={!!errors.username}
+              helperText={errors.username}
             />
             <TextField
               fullWidth
@@ -152,13 +168,22 @@ const UserList = () => {
               error={!!errors.email}
               helperText={errors.email}
             />
-
-            {/* Department Dropdown */}
-            <FormControl fullWidth margin="normal" error={!!errors.department}>
+            <TextField
+              fullWidth
+              label="Phone"
+              variant="outlined"
+              margin="normal"
+              name="phone"
+              value={newUser.phone}
+              onChange={handleInputChange}
+              error={!!errors.phone}
+              helperText={errors.phone}
+            />
+            <FormControl fullWidth margin="normal" error={!!errors.website}>
               <InputLabel>Department</InputLabel>
               <Select
-                name="department"
-                value={newUser.department}
+                name="website"
+                value={newUser.website}
                 onChange={handleInputChange}
                 label="Department"
               >
@@ -167,7 +192,9 @@ const UserList = () => {
                 <MenuItem value="Engineering">Engineering</MenuItem>
                 <MenuItem value="Sales">Sales</MenuItem>
               </Select>
-              {errors.department && <FormHelperText>{errors.department}</FormHelperText>}
+              {errors.website && (
+                <FormHelperText>{errors.website}</FormHelperText>
+              )}
             </FormControl>
           </Box>
         </DialogContent>
@@ -181,42 +208,54 @@ const UserList = () => {
         </DialogActions>
       </Dialog>
 
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableCell>ID</TableCell>
-            <TableCell>First Name</TableCell>
-            <TableCell>Last Name</TableCell>
-            <TableCell>Email</TableCell>
-            <TableCell>Department</TableCell>
-            <TableCell>Actions</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {currentUsers.map((user) => (
-            <UserCard
-              key={user.id}
-              user={user}
-              editingUserId={editingUserId}
-              startEditing={startEditing}
-              stopEditing={stopEditing}
-              updateUserData={updateUserData}
-              deleteUserData={deleteUserData}
-            />
-          ))}
-        </TableBody>
-      </Table>
+      <Box
+        sx={{
+          overflowX: "auto",
+          backgroundColor: "#fff",
+          borderRadius: 1,
+          p: 2,
+          mt: 2,
+        }}
+      >
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>ID</TableCell>
+              <TableCell>First Name</TableCell>
+              <TableCell>Last Name</TableCell>
+              <TableCell>Email</TableCell>
+              <TableCell>Phone</TableCell>
+              <TableCell>Department</TableCell>
+              <TableCell>Actions</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {currentUsers.map((user) => (
+              <UserCard
+                key={user.id}
+                user={user}
+                editingUserId={editingUserId}
+                startEditing={startEditing}
+                stopEditing={stopEditing}
+                updateUserData={updateUserData}
+                deleteUserData={deleteUserData}
+              />
+            ))}
+          </TableBody>
+        </Table>
+      </Box>
 
-      {/* Pagination Component */}
-      <Pagination
-        count={Math.ceil(users.length / itemsPerPage)}
-        page={currentPage}
-        onChange={paginate}
-        color="primary"
-        showFirstButton
-        showLastButton
-      />
-    </div>
+      <Box sx={{ mt: 3, display: "flex", justifyContent: "center" }}>
+        <Pagination
+          count={Math.ceil(users.length / itemsPerPage)}
+          page={currentPage}
+          onChange={paginate}
+          color="primary"
+          showFirstButton
+          showLastButton
+        />
+      </Box>
+    </Box>
   );
 };
 
