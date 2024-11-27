@@ -46,31 +46,23 @@ To run the User Management Dashboard locally, follow the steps below:
 
 Clone the Repository:
 
-bash
-Copy code
 git clone <your-repository-link>
 cd <your-repository-folder>
 Install Dependencies:
+npm install
+Start the Application:
+npm start
+Open your web browser and navigate to http://localhost:3000 to view the application.
+
 
 Run the following command to install the required dependencies for the frontend (React):
 
-bash
-Copy code
-npm install
-Start the Application:
 
-After the dependencies are installed, start the app using the following command:
-
-bash
-Copy code
-npm start
-The app will be available at http://localhost:3000.
-
-3. Deployed Link
+4. Deployed Link
 The application is deployed on Vercel. You can access the live version here:
 https://dashboard-rust-seven.vercel.app/
 
-4. Challenges Faced
+5. Challenges Faced
 Top 3 Technical Challenges:
 Pagination with MUI:
 
@@ -83,7 +75,7 @@ Deprecated and Outdated Packages:
 Several dependencies, particularly MUI components and React versions, had been deprecated. I had to update them to their latest stable versions, which sometimes broke the build pipeline, requiring additional fixes for compatibility.
 
 
-5. Logic of Implementation (In Brief)
+6. Logic of Implementation (In Brief)
 The application implements the following logic:
 
 User Management:
@@ -97,7 +89,7 @@ Add New User:
 A modal dialog is used to add new users. Upon filling out the form, the data is added to the state and displayed in the user table.
 
 
-6. Pagination vs Scrolling
+7. Pagination vs Scrolling
 For this project, pagination was chosen for the following reasons:
 
 Pagination is ideal for structured data where users need to navigate between chunks of information. It offers better control and can be easily styled.
@@ -105,7 +97,7 @@ Pagination is ideal for structured data where users need to navigate between chu
 Infinite Scrolling could also be implemented in the future if there's a need to display a continuous flow of data, but for now, pagination provides a cleaner and more controlled user experience.
 
 
-7. Domain-Driven Design
+8. Domain-Driven Design
 Since this project is relatively simple and focuses mainly on frontend development, Domain-Driven Design (DDD) was not extensively implemented. However, the following components can be considered as part of the "user management" domain:
 
 User Data:
