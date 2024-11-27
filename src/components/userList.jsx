@@ -115,7 +115,6 @@ const UserList = () => {
         Add User
       </Button>
 
-      {/* Modal Dialog for Adding User */}
       <Dialog open={open} onClose={() => setOpen(false)}>
         <DialogTitle>Add New User</DialogTitle>
         <DialogContent>
